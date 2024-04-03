@@ -1,7 +1,7 @@
 import { Button, Frog } from "frog";
 import { devtools } from "frog/dev";
 import { serveStatic } from "frog/serve-static";
-import { neynar as neynarHub } from 'frog/hubs'
+import { neynar as neynarHub } from "frog/hubs";
 import { neynar } from "frog/middlewares";
 import { handle } from "frog/vercel";
 import { CastParamType, NeynarAPIClient } from "@neynar/nodejs-sdk";
@@ -12,12 +12,15 @@ import redis from "../lib/redis.js";
 const NEYNAR_API_KEY = process.env.NEYNAR_API_KEY ?? "";
 const neynarClient = new NeynarAPIClient(NEYNAR_API_KEY);
 
+const ADD_URL =
+  "https://warpcast.com/~/add-cast-action?name=Upthumb&icon=thumbsup&actionType=post&postUrl=https://upthumbs.vercel.app/api/upthumb";
+
 export const app = new Frog({
   assetsPath: "/",
   basePath: "/api",
   ui: { vars },
   hub: neynarHub({ apiKey: NEYNAR_API_KEY }),
-  browserLocation: 'https://warpcast.com/~/add-cast-action?name=Upthumb&icon=thumbsup&actionType=post&postUrl=https://upthumbs.vercel.app/api/upthumb'
+  browserLocation: ADD_URL,
 }).use(
   neynar({
     apiKey: NEYNAR_API_KEY,
@@ -67,6 +70,7 @@ app.frame("/", (c) => {
       </Box>
     ),
     intents: [
+      <Button.Link href={ADD_URL}>Add Action</Button.Link>,
       <Button value="leaderboard" action="/leaderboard">
         🏆 Leaderboard
       </Button>,
@@ -79,7 +83,8 @@ app.frame("/", (c) => {
 
 app.frame("/leaderboard", async (c) => {
   const leaders = await redis.zrevrange("upthumbs", 0, 3, "WITHSCORES");
-  const [firstFid, firstScore, secondFid, secondScore, thirdFid, thirdScore] = leaders;
+  const [firstFid, firstScore, secondFid, secondScore, thirdFid, thirdScore] =
+    leaders;
 
   const firstName = await redis.hget("usernames", firstFid);
   const secondName = await redis.hget("usernames", secondFid);
