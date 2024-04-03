@@ -78,7 +78,12 @@ app.frame("/", (c) => {
 
 app.frame("/leaderboard", async (c) => {
   const leaders = await redis.zrevrange("upthumbs", 0, 3, "WITHSCORES");
-  console.log(leaders);
+  const [firstFid, firstScore, secondFid, secondScore, thirdFid, thirdScore] = leaders;
+
+  const firstName = await redis.hget("usernames", firstFid);
+  const secondName = await redis.hget("usernames", secondFid);
+  const thirdName = await redis.hget("usernames", thirdFid);
+
   return c.res({
     image: (
       <Box
@@ -94,13 +99,13 @@ app.frame("/leaderboard", async (c) => {
           </Heading>
           <Box paddingLeft="128">
             <Text align="left" size="32">
-              🥇 First
+              🥇 {firstName}: {firstScore}
             </Text>
             <Text align="left" size="32">
-              🥈 Second
+              🥈 {secondName}: {secondScore}
             </Text>
             <Text align="left" size="32">
-              🥉 Third
+              🥉 {thirdName}: {thirdScore}
             </Text>
           </Box>
         </VStack>
