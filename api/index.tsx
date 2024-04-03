@@ -28,6 +28,7 @@ export const app = new Frog({
   })
 );
 
+// Cast action handler
 app.hono.post("/upthumb", async (c) => {
   const {
     trustedData: { messageBytes },
@@ -52,6 +53,7 @@ app.hono.post("/upthumb", async (c) => {
   }
 });
 
+// Frame handlers
 app.frame("/", (c) => {
   return c.res({
     image: (
