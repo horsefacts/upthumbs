@@ -16,7 +16,8 @@ export const app = new Frog({
   assetsPath: "/",
   basePath: "/api",
   ui: { vars },
-  hub: neynarHub({ apiKey: NEYNAR_API_KEY })
+  hub: neynarHub({ apiKey: NEYNAR_API_KEY }),
+  browserLocation: 'https://warpcast.com/~/add-cast-action?name=Upthumb&icon=thumbsup&actionType=post&postUrl=https://upthumbs.vercel.app/api/upthumb'
 }).use(
   neynar({
     apiKey: NEYNAR_API_KEY,
