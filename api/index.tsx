@@ -1,7 +1,7 @@
 import { Button, Frog } from "frog";
 import { devtools } from "frog/dev";
 import { serveStatic } from "frog/serve-static";
-//import { neynar } from 'frog/hubs'
+import { neynar as neynarHub } from 'frog/hubs'
 import { neynar } from "frog/middlewares";
 import { handle } from "frog/vercel";
 import { CastParamType, NeynarAPIClient } from "@neynar/nodejs-sdk";
@@ -16,8 +16,7 @@ export const app = new Frog({
   assetsPath: "/",
   basePath: "/api",
   ui: { vars },
-  // Supply a Hub to enable frame verification.
-  // hub: neynar({ apiKey: 'NEYNAR_FROG_FM' })
+  hub: neynarHub({ apiKey: NEYNAR_API_KEY })
 }).use(
   neynar({
     apiKey: NEYNAR_API_KEY,
