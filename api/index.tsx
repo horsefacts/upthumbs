@@ -127,7 +127,7 @@ app.frame("/leaderboard", async (c) => {
 
 app.frame("/upthumbs", async (c) => {
   const fid = c.var.interactor?.fid ?? 0;
-  await redis.zscore("upthumbs", fid);
+  const upthumbs = await redis.zscore("upthumbs", fid);
 
   return c.res({
     image: (
@@ -143,7 +143,7 @@ app.frame("/upthumbs", async (c) => {
             Your Upthumbs:
           </Heading>
           <Text align="center" size="32">
-            0
+            {upthumbs}
           </Text>
         </VStack>
       </Box>
