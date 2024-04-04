@@ -40,14 +40,16 @@ app.hono.post("/upthumb", async (c) => {
       result.action.cast.hash,
       CastParamType.Hash
     );
-    await upthumb(cast.cast.author.fid, cast.cast.author.username);
-    let message = `You upthumbed ${cast.cast.author.username}`;
+    const { cast: { author: { fid, username } } } = cast;
+
+    await upthumb(fid, username);
+
+    let message = `You upthumbed ${username}`;
     if (message.length > 30) {
       message = "Upthumbed!";
     }
-    return c.json({
-      message,
-    });
+
+    return c.json({ message });
   } else {
     return c.json({ message: "Unauthorized" }, 401);
   }
