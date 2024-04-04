@@ -13,7 +13,7 @@ const NEYNAR_API_KEY = process.env.NEYNAR_API_KEY ?? "";
 const neynarClient = new NeynarAPIClient(NEYNAR_API_KEY);
 
 const ADD_URL =
-  "https://warpcast.com/~/add-cast-action?name=Upthumb&icon=thumbsup&actionType=post&postUrl=https://upthumbs.vercel.app/api/upthumb";
+  "https://warpcast.com/~/add-cast-action?name=Upthumb&icon=thumbsup&actionType=post&postUrl=https://upthumbs.app/api/upthumb";
 
 export const app = new Frog({
   assetsPath: "/",
