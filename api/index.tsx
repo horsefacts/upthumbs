@@ -136,7 +136,7 @@ app.frame("/upthumbs", async (c) => {
   const fid = c.var.interactor?.fid ?? 0;
   let upthumbs = "0";
   try {
-    await redis.zscore("upthumbs", fid);
+    upthumbs = await redis.zscore("upthumbs", fid) ?? "0";
   } catch (e) {}
 
   return c.res({
