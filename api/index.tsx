@@ -45,6 +45,9 @@ app.hono.post("/upthumb", async (c) => {
         author: { fid, username },
       },
     } = cast;
+    if (result.action.interactor.fid === fid) {
+      return c.json({ message: "Nice try." }, 400);
+    }
 
     await upthumb(fid, username);
 
