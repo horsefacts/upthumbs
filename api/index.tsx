@@ -40,7 +40,11 @@ app.hono.post("/upthumb", async (c) => {
       result.action.cast.hash,
       CastParamType.Hash
     );
-    const { cast: { author: { fid, username } } } = cast;
+    const {
+      cast: {
+        author: { fid, username },
+      },
+    } = cast;
 
     await upthumb(fid, username);
 
@@ -107,7 +111,7 @@ app.frame("/leaderboard", async (c) => {
           <Heading color="fcPurple" align="center" size="48">
             Leaderboard
           </Heading>
-          <Box paddingLeft="128">
+          <Box>
             <Text align="left" size="32">
               🥇 {firstName}: {firstScore}
             </Text>
@@ -127,7 +131,10 @@ app.frame("/leaderboard", async (c) => {
 
 app.frame("/upthumbs", async (c) => {
   const fid = c.var.interactor?.fid ?? 0;
-  const upthumbs = await redis.zscore("upthumbs", fid);
+  let upthumbs = "0";
+  try {
+    await redis.zscore("upthumbs", fid);
+  } catch (e) {}
 
   return c.res({
     image: (
