@@ -13,7 +13,7 @@ const NEYNAR_API_KEY = process.env.NEYNAR_API_KEY ?? "";
 const neynarClient = new NeynarAPIClient(NEYNAR_API_KEY);
 
 const ADD_URL =
-  "https://warpcast.com/~/add-cast-action?name=Upthumb&icon=thumbsup&actionType=post&postUrl=https://upthumbs.app/api/upthumb";
+  "https://warpcast.com/~/add-cast-action?url=https://upthumbs.app/api/upthumb";
 
 export const app = new Frog({
   assetsPath: "/",
@@ -28,7 +28,20 @@ export const app = new Frog({
   })
 );
 
-// Cast action handler
+// Cast action GET handler
+app.hono.get("/upthumb", async (c) => {
+  return c.json({
+    name: "Upthumb",
+    icon: "thumbsup",
+    description: "Give casts 'upthumbs' and see them on a leaderboard.",
+    aboutUrl: "https://github.com/horsefacts/upthumbs",
+    action: {
+      type: "post",
+    },
+  });
+});
+
+// Cast action POST handler
 app.hono.post("/upthumb", async (c) => {
   const {
     trustedData: { messageBytes },
@@ -136,7 +149,7 @@ app.frame("/upthumbs", async (c) => {
   const fid = c.var.interactor?.fid ?? 0;
   let upthumbs = "0";
   try {
-    upthumbs = await redis.zscore("upthumbs", fid) ?? "0";
+    upthumbs = (await redis.zscore("upthumbs", fid)) ?? "0";
   } catch (e) {}
 
   return c.res({
