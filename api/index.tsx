@@ -69,7 +69,7 @@ app.hono.post("/upthumb", async (c) => {
       message = "Upthumbed!";
     }
 
-    return c.json({ message });
+    return c.json({ message, link: "https://warpcast.com/horsefacts.eth/0x09d647a9" });
   } else {
     return c.json({ message: "Unauthorized" }, 401);
   }
